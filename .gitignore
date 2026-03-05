@@ -1,0 +1,13 @@
+# datasets
+data/
+outputs/
+
+# python cache
+__pycache__/
+*.pyc
+
+# notebooks
+.ipynb_checkpoints
+
+# system files
+.DS_Store
