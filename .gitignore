@@ -1,5 +1,7 @@
 # datasets
 data/
+
+#generated outputs
 outputs/
 
 # python cache
@@ -11,3 +13,11 @@ __pycache__/
 
 # system files
 .DS_Store
+
+# history files
+.history/
+
+# model weights
+
+
+# logs
