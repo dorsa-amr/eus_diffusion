@@ -2,7 +2,7 @@ import os
 import random
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 SOURCE_ROOT = PROJECT_ROOT / "outputs" / "algorithmic_approach" / "output_dataset_v4"
 SPLIT_DIR = PROJECT_ROOT / "data" / "controlnet_dataset" / "splits"

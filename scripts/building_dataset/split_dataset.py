@@ -1,7 +1,7 @@
 from pathlib import Path
 import random
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 IMG_DIR = PROJECT_ROOT / "data" / "processed" / "images"
 SPLIT_DIR = PROJECT_ROOT / "data" / "splits"
