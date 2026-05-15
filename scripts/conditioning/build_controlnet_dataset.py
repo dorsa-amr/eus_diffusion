@@ -48,8 +48,16 @@ def copy_patient_data(split_name, patients):
 
         img_dir = os.path.join(SOURCE_ROOT, "images", category, patient)
         mask_dir = os.path.join(SOURCE_ROOT, "halo_masks", category, patient)
+    
+        # for fname in os.listdir(img_dir):
 
-        for fname in os.listdir(img_dir):
+        files = sorted(os.listdir(img_dir))
+
+        for i, fname in enumerate(files):
+            
+            FRAME_STRIDE = 3
+            if i % FRAME_STRIDE != 0:
+                continue
 
             if not fname.endswith(".png"):
                 continue

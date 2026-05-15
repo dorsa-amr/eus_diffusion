@@ -1,13 +1,26 @@
-Train a conditional latent diffusion model (Stable Diffusion + ControlNet) to generate full EUS images containing needles, conditioned on explicit needle geometry (e.g., centerline / mask), rather than inserting needles into existing ultrasound images.
+EUS Diffusion is a pipeline for fine-tuning Stable Diffusion v1.5 with LoRA on endoscopic ultrasound images and training ControlNet to generate needle-inserted EUS images.
 
+## Pipeline
 
-(We first fine-tune Stable Diffusion on real EUS pancreas images to match the domain, then train a ControlNet conditioned on needle masks or centerlines to generate full EUS images with needles (not just overlay needles onto real frames).)
+1. Install dependencies
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Build the ControlNet dataset
+   ```bash
+   python scripts/conditioning/build_controlnet_dataset.py
+   ```
+3. Train ControlNet
+   ```bash
+   python diffusers/examples/controlnet/train_controlnet.py --pretrained_model_name_or_path runwayml/stable-diffusion-v1-5 --output_dir outputs/controlnet_eus ...
+   ```
+4. Run inference
+   ```bash
+   python scripts/inference.py
+   ```
 
+## Notes
 
-# Build dataset
-
-python scripts/build_dataset.py
-
-# Train LoRA
-
-python training/train_lora.py
+- `data/` and `outputs/` are excluded from version control.
+- Visualization and temporary utility scripts are ignored.
+- Use `outputs/controlnet_eus` for ControlNet checkpoints and `outputs/lora_eus_v1` for LoRA weights.

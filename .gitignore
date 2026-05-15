@@ -1,23 +1,46 @@
-# datasets
+# dataset and output folders
 data/
-
-#generated outputs
 outputs/
 
-# python cache
+# python cache and compiled files
 __pycache__/
+*.py[cod]
+*.pyo
+*.pyd
 *.pyc
+
+# virtual environments and local config
+.env
+*.env
+.vscode/
+.history/
 
 # notebooks
 .ipynb_checkpoints
 
-# system files
-.DS_Store
+# logs and runtime artifacts
+*.log
+*.pot
 
-# history files
-.history/
+# model assets
+*.ckpt
+*.safetensors
+*.pt
+*.pth
+*.bin
 
-# model weights
-
-
-# logs
+# local tools and visualization scripts
+diffusers/
+convert_to_RGB.py
+find_images.py
+grid_visualizations.py
+make_mask_vs_gen_grids.py
+make_sd_vs_lora_girds.py
+metadata_generator.py
+plot_pancreas_images.py
+rename_and_move_folder.py
+test.py
+test2.py
+scripts/algorithmic_approach/output_visualization.py
+scripts/conditioning/merge_SD_with_Lora.py
+scripts/conditioning/training_controlnet/
