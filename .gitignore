@@ -44,3 +44,4 @@ test2.py
 scripts/algorithmic_approach/output_visualization.py
 scripts/conditioning/merge_SD_with_Lora.py
 scripts/conditioning/training_controlnet/
+scripts/conditioning/make_fan_mask.py
