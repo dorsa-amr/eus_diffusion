@@ -1,17 +1,21 @@
-accelerate==1.12.0
-diffusers==0.25.0
-transformers==4.38.2
-datasets==4.7.0
-peft==0.7.1
-safetensors==0.7.0
-torch==2.10.0
+# Versions from the environment used for the report (Python 3, CUDA 11.8).
+# diffusers is installed from a local clone of v0.27.2 (see README), which also provides the
+# ControlNet training example script.
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch==2.1.2
 torchvision==0.16.2
-xformers==0.0.35
-huggingface_hub==0.36.2
-Pillow==12.1.0
-tqdm==4.67.1
+xformers==0.0.23
+diffusers==0.27.2
+transformers==4.38.2
+accelerate==0.27.2
+peft==0.7.1
+datasets==4.1.1
+huggingface_hub==0.24.0
+safetensors==0.7.0
+tensorboard==2.20.0
 numpy==1.26.4
 opencv-python==4.8.1.78
-scikit-image==0.25.2
-pandas==2.3.3
+Pillow==12.1.0
+tifffile==2025.5.10
 matplotlib==3.10.8
+tqdm==4.67.1

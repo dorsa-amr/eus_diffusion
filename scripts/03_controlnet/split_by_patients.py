@@ -1,3 +1,6 @@
+# Splits patients (not frames) into train/val/test (70/15/15) to avoid leakage between sets.
+# Writes data/controlnet_dataset/splits/{train,val,test}_patients.txt as "<category>/<patient>" lines.
+
 import os
 import random
 from pathlib import Path

@@ -1,4 +1,8 @@
+# Saves a 2xN grid (frames with simulated needle / core masks) per patient, to visually check
+# the output of simulate_needles.py.
+
 import os
+from pathlib import Path
 import random
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,8 +12,10 @@ from PIL import Image
 # Configuration
 # ============================================================
 
-OUTPUT_ROOT = "/home/dorsa/Uni-Concordia/Mitacs/eus_diffusion/algorithmic_approach/output_dataset_v4"
-SAVE_ROOT = os.path.join("/home/dorsa/Uni-Concordia/Mitacs/eus_diffusion/algorithmic_approach", "needle_simulation_visualization_v4")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+OUTPUT_ROOT = str(PROJECT_ROOT / "outputs" / "algorithmic_approach" / "output_dataset_v4")
+SAVE_ROOT = str(PROJECT_ROOT / "outputs" / "algorithmic_approach" / "needle_simulation_visualization_v4")
 
 N_FRAMES = 4
 RANDOM_SEED = 0
