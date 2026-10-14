@@ -1,3 +1,6 @@
+# Frame-level 90/10 train/val split of the preprocessed images. Not used in the final pipeline
+# (DreamBooth-LoRA trains on all images).
+
 from pathlib import Path
 import random
 

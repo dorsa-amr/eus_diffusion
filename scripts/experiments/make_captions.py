@@ -1,3 +1,6 @@
+# Writes one caption file per preprocessed image. Not used by DreamBooth-LoRA training,
+# which uses --instance_prompt instead.
+
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]

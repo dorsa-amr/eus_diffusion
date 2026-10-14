@@ -1,4 +1,15 @@
+# Physics-inspired needle synthesis (report §2.1). For every patient, a base needle state is
+# sampled from the first frame and jittered per frame, then rendered into each 512x512 frame.
+#
+# Output layout (under OUTPUT_ROOT):
+#   images/<category>/<patient>/<frame>.png              EUS frame with simulated needle
+#   core_masks/<category>/<patient>/<frame>_core.png      needle shaft mask
+#   halo_masks/<category>/<patient>/<frame>_halo.png      shaft + halo mask (used for ControlNet)
+#   centerlines/<category>/<patient>/<frame>_centerline.npy
+#   tips/<category>/<patient>/<frame>_tip.txt
+
 import os
+from pathlib import Path
 import numpy as np
 import cv2
 import tifffile as tiff
@@ -11,8 +22,10 @@ import hashlib
 # Configuration
 # ============================================================
 
-INPUT_ROOT = "/home/dorsa/Uni-Concordia/Mitacs/eus_diffusion/data/processed/images"
-OUTPUT_ROOT = "/home/dorsa/Uni-Concordia/Mitacs/eus_diffusion/algorithmic_approach/output_dataset_v4"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+INPUT_ROOT = str(PROJECT_ROOT / "data" / "processed" / "images")
+OUTPUT_ROOT = str(PROJECT_ROOT / "outputs" / "algorithmic_approach" / "output_dataset_v4")
 
 # CATEGORY_MAP = {
 #     "Cancer_pancreas": "cancer",
@@ -231,7 +244,11 @@ def apply_appearance(image, core, halo, params, rng):
     cy = 0
 
     # Precompute Sobel once
-    gx = cv2.Sobel(core.astype(np.float32), cv2.CV_32F, 1, 0, ksize=3)
+    # NOTE: the Sobel gradient of the core mask is normal to the needle and is zero inside the
+    # shaft. Interior pixels therefore get full visibility regardless of angle, and on the edges
+    # visibility is lowest when the beam is perpendicular to the needle (the opposite of specular
+    # reflection). Kept as-is because the released dataset (output_dataset_v4) was generated with it.
+    gx =cv2.Sobel(core.astype(np.float32), cv2.CV_32F, 1, 0, ksize=3)
     gy = cv2.Sobel(core.astype(np.float32), cv2.CV_32F, 0, 1, ksize=3)
 
     ys, xs = np.where(core > 0)

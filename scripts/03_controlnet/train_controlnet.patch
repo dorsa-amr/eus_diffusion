@@ -1,0 +1,69 @@
+diff --git a/examples/controlnet/train_controlnet.py b/examples/controlnet/train_controlnet.py
+index 12f1c5dc6..73daa6b2b 100644
+--- a/examples/controlnet/train_controlnet.py
++++ b/examples/controlnet/train_controlnet.py
+@@ -183,8 +183,24 @@ def log_validation(
+         del pipeline
+         gc.collect()
+         torch.cuda.empty_cache()
++    
++    # SAVE VALIDATION IMAGES LOCALLY
++    save_dir = os.path.join(args.output_dir, "validation_images", f"step_{step}")
++    os.makedirs(save_dir, exist_ok=True)
+ 
+-        return image_logs
++    for idx, log in enumerate(image_logs):
++        validation_prompt = log["validation_prompt"]
++        validation_image = log["validation_image"]
++        images = log["images"]
++
++        # save conditioning image
++        validation_image.save(os.path.join(save_dir, f"{idx}_conditioning.png"))
++
++        # save generated images
++        for i, image in enumerate(images):
++            image.save(os.path.join(save_dir, f"{idx}_gen_{i}.png"))
++
++    return image_logs
+ 
+ 
+ def import_model_class_from_model_name_or_path(pretrained_model_name_or_path: str, revision: str):
+@@ -612,6 +628,7 @@ def make_train_dataset(args, tokenizer, accelerator):
+     if args.dataset_name is not None:
+         # Downloading and loading a dataset from the hub.
+         dataset = load_dataset(
++            "imagefolder",
+             args.dataset_name,
+             args.dataset_config_name,
+             cache_dir=args.cache_dir,
+@@ -695,14 +712,28 @@ def make_train_dataset(args, tokenizer, accelerator):
+             transforms.ToTensor(),
+         ]
+     )
+-
++    
+     def preprocess_train(examples):
++        # 1. Handle main images (already loaded as PIL objects by imagefolder)
+         images = [image.convert("RGB") for image in examples[image_column]]
++        # images = [Image.open(image).convert("RGB") for image in examples[image_column]]
+         images = [image_transforms(image) for image in images]
+ 
+-        conditioning_images = [image.convert("RGB") for image in examples[conditioning_image_column]]
++        # 2. Handle conditioning masks (loaded from strings + path join)
++        # conditioning_images = [image.convert("RGB") for image in examples[conditioning_image_column]]
++        # conditioning_images = [Image.open(image).convert("RGB") for image in examples[conditioning_image_column]]
++        conditioning_images = []
++        for image_path in examples[conditioning_image_column]:
++            # Join filename with the actual directory path
++            full_path = os.path.join(args.train_data_dir, image_path)
++            
++            if not os.path.exists(full_path):
++                raise FileNotFoundError(f"Mask not found at: {full_path}. Check your --train_data_dir.")
++            conditioning_images.append(Image.open(full_path).convert("RGB"))
++        
+         conditioning_images = [conditioning_image_transforms(image) for image in conditioning_images]
+ 
++        # 3. Assign to examples dictionary
+         examples["pixel_values"] = images
+         examples["conditioning_pixel_values"] = conditioning_images
+         examples["input_ids"] = tokenize_captions(examples)
